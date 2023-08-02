@@ -1,12 +1,12 @@
 from flask import Flask, jsonify, request
 from flasgger import Swagger
-from insights import configure_insights
+from configure_insights import configure_insights
 import user_crud
 
 app = Flask(__name__)
 swagger = Swagger(app)
 
-instrumentation_key = '<tu-instrumentation-key>'
+instrumentation_key = 'ba8f867e-9a9d-4f8a-b45b-561e88a02c82'
 logger = configure_insights(app, instrumentation_key)
 
 @app.route('/user', methods=['POST'])
@@ -59,4 +59,4 @@ def hello():
     return 'Hola, mundo!'
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000)
+    app.run()
