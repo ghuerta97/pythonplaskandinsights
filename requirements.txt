@@ -1,0 +1,5 @@
+Flask==2.0.1
+opencensus-ext-azure==1.1.0
+opencensus-ext-flask==0.8.0
+flask-sqlalchemy
+flasgger

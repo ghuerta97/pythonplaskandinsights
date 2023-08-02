@@ -1,0 +1,62 @@
+from flask import Flask, jsonify, request
+from flasgger import Swagger
+from insights import configure_insights
+import user_crud
+
+app = Flask(__name__)
+swagger = Swagger(app)
+
+instrumentation_key = '<tu-instrumentation-key>'
+logger = configure_insights(app, instrumentation_key)
+
+@app.route('/user', methods=['POST'])
+def create_user():
+    """
+    Endpoint para crear un usuario
+    ---
+    responses:
+        200:
+            description: Usuario creado
+    """
+    return user_crud.create_user()
+
+@app.route('/user/<user_id>', methods=['GET'])
+def read_user(user_id):
+    """
+    Endpoint para obtener un usuario
+    ---
+    responses:
+        200:
+            description: Detalle del usuario
+    """
+    return user_crud.read_user(user_id)
+
+@app.route('/user/<user_id>', methods=['PUT'])
+def update_user(user_id):
+    """
+    Endpoint para actualizar un usuario
+    ---
+    responses:
+        200:
+            description: Usuario actualizado
+    """
+    return user_crud.update_user(user_id)
+
+@app.route('/user/<user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    """
+    Endpoint para eliminar un usuario
+    ---
+    responses:
+        200:
+            description: Usuario eliminado
+    """
+    return user_crud.delete_user(user_id)
+
+@app.route('/')
+def hello():
+    logger.warning('Esta es una advertencia!')
+    return 'Hola, mundo!'
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8000)
