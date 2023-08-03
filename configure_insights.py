@@ -11,6 +11,7 @@ def configure_insights(app, instrumentation_key):
     logger.setLevel(logging.INFO)
     handler = AzureLogHandler(
         connection_string=f'InstrumentationKey={instrumentation_key}')
+    handler.setFormatter(verbose_formatter())
     logger.addHandler(handler)
 
     middleware = FlaskMiddleware(
