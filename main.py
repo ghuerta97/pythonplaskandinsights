@@ -1,11 +1,14 @@
 from flask import Flask, jsonify, request
 from flasgger import Swagger
 from configure_insights import configure_insights
-import db_connection
+import db_connection import db
 import user_crud
 
 app = Flask(__name__)
 swagger = Swagger(app)
+
+with app.app_context():
+    db.create_all()  # Crea las tablas en la base de datos
 
 instrumentation_key = '<tu-instrumentation-key>'
 # Configura Azure Insights utilizando la aplicación actual
@@ -13,7 +16,7 @@ logger = configure_insights(app, instrumentation_key)
 
 # Adjunta el logger a la aplicación de Flask
 app.logger = logger
-
+db.init
 @app.route('/user', methods=['POST'])
 def create_user():
     user_data = request.json
