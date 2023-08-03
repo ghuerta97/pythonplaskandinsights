@@ -8,7 +8,7 @@ import logging
 
 def configure_insights(app, instrumentation_key):
     logger = logging.getLogger(__name__)
-    logger.setLevel(logging.INFO)
+    logger.setLevel(logging.DEBUG)
     handler = AzureLogHandler(
         connection_string=f'InstrumentationKey={instrumentation_key}')
     handler.setFormatter(verbose_formatter())
