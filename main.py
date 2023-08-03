@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from flasgger import Swagger
-from insights import configure_insights
+from configure_insights import configure_insights
 import user_crud
 
 app = Flask(__name__)
@@ -63,4 +63,4 @@ def hello():
     return 'Hola, mundo!'
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000)
+    app.run()
