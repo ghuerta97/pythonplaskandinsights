@@ -1,4 +1,5 @@
 from db_connection import db
+from flask import current_app
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -9,11 +10,15 @@ class User(db.Model):
         return f'<User {self.username}>'
 
 def create_user(username, email):
+    current_app.logger.debug("creando el usuario")
+    current_app.logger.warning("advertencia se esta creando el usuario")
     user = User(username=username, email=email)
     db.session.add(user)
     db.session.commit()
 
 def read_user(user_id):
+    current_app.logger.debug("leer usuario")
+    current_app.logger.warning("advertencia se esta leyendo el usuario")
     return User.query.get(user_id)
 
 def update_user(user_id, username=None, email=None):

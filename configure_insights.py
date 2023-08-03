@@ -1,22 +1,29 @@
-from opencensus.ext.azure import exceptions
+from flask import current_app
 from opencensus.ext.azure.log_exporter import AzureLogHandler
+from opencensus.ext.azure.trace_exporter import AzureExporter
 from opencensus.ext.flask.flask_middleware import FlaskMiddleware
+from opencensus.trace.samplers import ProbabilitySampler
 import logging
 
-def configure_insights(app, instrumentation_key):
+def configure_insights(instrumentation_key):
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.INFO)
     handler = AzureLogHandler(
         connection_string=f'InstrumentationKey={instrumentation_key}')
     logger.addHandler(handler)
 
-    try:
-        middleware = FlaskMiddleware(
-            app,
-            exporter=handler,
-            blacklist_paths=['/healthcheck']
-        )
-    except exceptions.TransportError:
-        pass
+    middleware = FlaskMiddleware(
+        current_app._get_current_object(),
+        exporter=AzureExporter(
+            connection_string=f'InstrumentationKey={instrumentation_key}'
+        ),
+        sampler=ProbabilitySampler(rate=1.0)
+    )
 
     return logger
+
+def verbose_formatter():
+    return logging.Formatter(
+        '[%(asctime)s.%(msecs)d]\t %(levelname)s \t[%(name)s.%(funcName)s:%(lineno)d]\t %(message)s',
+        datefmt='%d/%m/%Y %H:%M:%S'
+    )

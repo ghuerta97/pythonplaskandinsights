@@ -7,7 +7,10 @@ app = Flask(__name__)
 swagger = Swagger(app)
 
 instrumentation_key = '<tu-instrumentation-key>'
-logger = configure_insights(app, instrumentation_key)
+logger = configure_insights(instrumentation_key)
+
+# Adjunta el logger a la aplicación de Flask
+app.logger = logger
 
 @app.route('/user', methods=['POST'])
 def create_user():
@@ -55,6 +58,7 @@ def delete_user(user_id):
 
 @app.route('/')
 def hello():
+    logger.debug('metodo principal')
     logger.warning('Esta es una advertencia!')
     return 'Hola, mundo!'
 
