@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from flasgger import Swagger
 from configure_insights import configure_insights
+import db_connection
 import user_crud
 
 app = Flask(__name__)
