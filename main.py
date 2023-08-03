@@ -7,7 +7,8 @@ app = Flask(__name__)
 swagger = Swagger(app)
 
 instrumentation_key = '<tu-instrumentation-key>'
-logger = configure_insights(instrumentation_key)
+# Configura Azure Insights utilizando la aplicación actual
+logger = configure_insights(app, instrumentation_key)
 
 # Adjunta el logger a la aplicación de Flask
 app.logger = logger

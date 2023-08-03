@@ -6,7 +6,7 @@ from opencensus.ext.flask.flask_middleware import FlaskMiddleware
 from opencensus.trace.samplers import ProbabilitySampler
 import logging
 
-def configure_insights(instrumentation_key):
+def configure_insights(app, instrumentation_key):
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.INFO)
     handler = AzureLogHandler(
@@ -14,7 +14,7 @@ def configure_insights(instrumentation_key):
     logger.addHandler(handler)
 
     middleware = FlaskMiddleware(
-        current_app._get_current_object(),
+        app,
         exporter=AzureExporter(
             connection_string=f'InstrumentationKey={instrumentation_key}'
         ),
