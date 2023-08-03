@@ -15,6 +15,9 @@ app.logger = logger
 
 @app.route('/user', methods=['POST'])
 def create_user():
+    user_data = request.json
+    username = user_data.get('username')
+    email = user_data.get('email')
     """
     Endpoint para crear un usuario
     ---
@@ -22,7 +25,7 @@ def create_user():
         200:
             description: Usuario creado
     """
-    return user_crud.create_user()
+    return user_crud.create_user(username,email)
 
 @app.route('/user/<user_id>', methods=['GET'])
 def read_user(user_id):
